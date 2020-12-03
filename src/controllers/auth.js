@@ -35,6 +35,54 @@ exports.register = async (req,res) => {
             },
         });
     } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            error: {
+                message: "Server Error",
+            },
+        });
+    }
+};
+
+exports.login = async (req,res) => {
+    try {
+        const schema = Joi.object({
+            email : Joi.string().email().min(6).required(),
+            password : Joi.string().min(6).required(),
+        });
+        const {error} = schema.validate(req.body);
+
+        if (error)
+            res.status(400).send({
+                error : {
+                    message: error.details[0].message,
+                },
+            });
+        
+        const { email, password} = req.body;
+        const user = await users.findOne({
+            where : { email },
+        });
+
+        if(!user) return res.status(400).send({ message : "Invalid Login" });
+        const validPass = await bcrypt.compare(password, user.password);
+
+        if(!validPass) return res.status(400).send({ message: "Invalid Login"});
+
+        const token = jwt.sign({ id: user.id }, "my-secret-key");
+
+        res.send({
+            status : "Success",
+            data: {
+                channel : {
+                    email,
+                    token,
+                }
+            }
+        });
+        
+    } catch (error) {
+        console.log(error);
         return res.status(500).send({
             error: {
                 message: "Server Error",
