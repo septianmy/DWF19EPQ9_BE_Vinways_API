@@ -23,7 +23,7 @@ exports.register = async (req,res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = await users.create({ ...req.body, password: hashedPassword });
-        const token = jwt.sign({ id : users.id }, "our-secret-key");
+        const token = jwt.sign({ id : users.id }, "vinways");
 
         res.send({
             message : "Response Success",
@@ -69,7 +69,7 @@ exports.login = async (req,res) => {
 
         if(!validPass) return res.status(400).send({ message: "Invalid Login"});
 
-        const token = jwt.sign({ id: user.id }, "my-secret-key");
+        const token = jwt.sign({ id: user.id }, "vinways");
 
         res.send({
             status : "Success",
