@@ -10,6 +10,8 @@ const { getTransactions, getDetailTransactions, addTransaction, deleteTransactio
 //middleware 
 const {auth, userCheck} = require('../middleware/auth');
 const {uploadImage} = require('../middleware/uploadImage');
+const {uploadMusic} = require('../middleware/uploadMusic');
+const { getMusics, getDetailMusic, addMusic, deleteMusic, updateMusic } = require("../controllers/music");
 
 //Auth
 router.post("/register", register);
@@ -34,5 +36,12 @@ router.get("/transaction/:id",getDetailTransactions);
 router.post("/transaction",auth,uploadImage("proofTransaction"),addTransaction );
 router.patch("/transaction/:id",auth,updateTransaction);
 router.delete("/transaction/:id", auth, deleteTransaction);
+
+//Musics
+router.get("/musics",getMusics);
+router.get("/music/:id",getDetailMusic);
+router.post("/music",auth, uploadMusic("thumbnail","attachment"), addMusic);
+router.patch("/music/:id",auth,updateMusic);
+router.delete("/music/:id",auth,deleteMusic);
 
 module.exports = router;

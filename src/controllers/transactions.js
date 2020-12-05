@@ -39,7 +39,7 @@ exports.getTransactions = async (req, res) => {
         console.log(error);
         return res.status(500).send({
             error: {
-                message: "Server Transactions Error",
+                message: "Server Error",
             },
         });
     }
@@ -86,14 +86,13 @@ exports.getDetailTransactions = async (req,res) => {
         console.log(error);
         return res.status(500).send({
             error: {
-                message: "Server Transactions Error",
+                message: "Server Error",
             },
         });
     }
 };
 
 //Add Incoming Transactions
-
 exports.addTransaction = async (req, res) => {
     try {
       const { body, file } = req;
@@ -147,11 +146,7 @@ exports.addTransaction = async (req, res) => {
               message: "Sorry, User ID Not Found",
             },
           });
-      }
-      
-
-      //send jika oke
-      
+      }  
     } catch (err) {
       //error here
       console.log(err);
