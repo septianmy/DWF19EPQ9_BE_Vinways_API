@@ -5,10 +5,11 @@ const router = express.Router();
 const { register, login } = require("../controllers/auth");
 const { getUsers, deleteUser, restoreUser } = require("../controllers/users");
 const { getArtists, getDetailArtist, addArtist, deleteArtist, restoreArtist, updateArtist } = require("../controllers/artist");
+const { getTransactions, getDetailTransactions, addTransaction, deleteTransaction, updateTransaction } = require("../controllers/transactions");
 
 //middleware 
-const {auth } = require('../middleware/auth');
-const {uploadImage } = require('../middleware/uploadImage');
+const {auth, userCheck} = require('../middleware/auth');
+const {uploadImage} = require('../middleware/uploadImage');
 
 //Auth
 router.post("/register", register);
@@ -26,5 +27,12 @@ router.post("/artist", auth, uploadImage("thumbnail"), addArtist);
 router.patch("/artist/:id", auth, updateArtist);
 router.delete("/artist/:id", auth, deleteArtist); //Soft Delete Artist
 router.post("/artist/:id", auth, restoreArtist); //Restore Artist
+
+//Transactions
+router.get("/transactions",getTransactions);
+router.get("/transaction/:id",getDetailTransactions);
+router.post("/transaction",auth,uploadImage("proofTransaction"),addTransaction );
+router.patch("/transaction/:id",auth,updateTransaction);
+router.delete("/transaction/:id", auth, deleteTransaction);
 
 module.exports = router;
